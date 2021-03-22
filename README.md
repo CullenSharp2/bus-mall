@@ -38,8 +38,7 @@ You are also responsible for the look and feel of the app, so don’t forget a c
 
     - Attach an event listener to the section of the HTML page where the images are going to be displayed.
 
-    - Once the users ‘clicks’ a product, generate three new products for the 
-    user to pick from.
+    - Once the users ‘clicks’ a product, generate three new products for the user to pick from.
 
 2. As a user, I would like to track the selections made by viewers so that I can determine which products to keep for the catalog.
 
