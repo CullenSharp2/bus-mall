@@ -1,6 +1,9 @@
 'use strict';
 let rounds = 25;
 
+//bad var for test only
+let count = 0;
+
 function CatalogItem (name, path, views) {
     this.name = name;
     this.path = path;
@@ -19,7 +22,7 @@ CatalogItem.prototype.getRandomItem = function(catalogItems) {
         createImg('img', target, CatalogItem.catalogItems[randInt].path, 'medium');
 
         CatalogItem.catalogItems[randInt].views++;
-        console.log(CatalogItem.catalogItems[randInt].views);
+        console.log(`${CatalogItem.catalogItems[randInt].name} has been viewed ${CatalogItem.catalogItems[randInt].views} times`);
     }
 }
 
@@ -32,7 +35,15 @@ function createImg (tag, parent, value, size) {
     parent.appendChild(newElem);
 }
 
+document.getElementsByTagName('div').addEventListener('click', voteHandler);
 
+function voteHandler(event) {
+    event.preventDefault();
+
+    console.log(event.target);
+    event.target.innerHTML = '';
+    CatalogItem.catalogItems[2].getRandomItem();
+}
 
 const wineGlass = new CatalogItem('wine-glass', 'imgs/wine-glass.jpg', 0);
 const waterCan = new CatalogItem('water-can', 'imgs/water-can.jpg', 0);
