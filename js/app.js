@@ -31,7 +31,8 @@ Item.prototype.getRandomItem = function (catalogItems) {
 
     for (let i = 0; i < 3; i++) {
         target = document.getElementById(`item-${i+1}`);
-        target.src = arr[i].path;
+        target.setAttribute('class', 'medium');
+        target.src = arr[i].path; 
     }
 }
 
