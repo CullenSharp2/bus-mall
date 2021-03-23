@@ -6,6 +6,18 @@ let leftItem = null;
 let middleItem = null;
 let rightItem = null;
 
+//get reference to button
+const resultsButton = document.getElementById('get-results');
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * i);
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
 function Item(name, path) {
     this.name = name;
     this.path = path;
@@ -45,7 +57,7 @@ for (let i of document.getElementsByTagName('img')) {
 
 function voteHandler(event) {
     event.preventDefault();
-    
+
     let id = event.target.id;
     console.log(rounds);
 
@@ -67,16 +79,21 @@ function voteHandler(event) {
     }
 }
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * i);
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+function getResults() {
+    const parent = document.getElementById('results');
+    let items = Item.items;
+    parent.innerHTML =  '';
+
+    if (rounds > 1) {
+        for (let i in items) {
+            createChild('li', parent, `${items[i].name} got ${items[i].likes} likes and was seen ${items[i].views} times.`);
+        }
     }
 }
 
-function createChild (tag, parent, text) {
+resultsButton.addEventListener('click', getResults)
+
+function createChild(tag, parent, text) {
     const newElem = document.createElement(tag);
     let newTextNode = document.createTextNode(text);
     newElem.appendChild(newTextNode);
@@ -106,14 +123,7 @@ const bag = new Item('bag', 'imgs/bag.jpg');
 
 
 function render(items) {
-    const parent = document.getElementById('results');
     items[0].getRandomItem();
-
-    if (rounds === 24) {
-        for (let i in items) {
-            createChild('li', parent, `${items[i].name} got ${items[i].likes} likes.`);
-        }
-    }
 }
 
 render(Item.items);
