@@ -21,8 +21,13 @@ Item.prototype.getRandomItem = function (catalogItems) {
 
     shuffle(arr);
     leftItem = arr[0];
+    leftItem.views++;
+
     middleItem = arr[1];
+    middleItem.views++;
+
     rightItem = arr[2];
+    rightItem.views++;
 
     for (let i = 0; i < 3; i++) {
         target = document.getElementById(`item-${i+1}`);
@@ -51,7 +56,6 @@ function voteHandler(event) {
         } else if (id === 'item-3') {
             rightItem.likes++;
         }
-        console.log(rounds, `${leftItem.name} has ${leftItem.likes} likes`)
         render(Item.items);
     }
 }
