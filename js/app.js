@@ -1,5 +1,6 @@
 'use strict';
-let rounds = 0;
+let currentRound = 0;
+let rounds = 25;
 
 //store where each item is on
 let leftItem = null;
@@ -27,25 +28,48 @@ function Item(name, path) {
     Item.items.push(this);
 }
 
-Item.prototype.getRandomItem = function (catalogItems) {
-    const arr = Item.items;
+Item.prototype.get3NewItems = function (catalogItems) {
+    const items = Item.items;
     let target;
 
-    shuffle(arr);
-    leftItem = arr[0];
-    leftItem.views++;
+    let previousLeft = leftItem;
+    let previousMiddle = middleItem;
+    let previousRight = rightItem;
 
-    middleItem = arr[1];
-    middleItem.views++;
+    shuffle(items);
 
-    rightItem = arr[2];
-    rightItem.views++;
-
-    for (let i = 0; i < 3; i++) {
-        target = document.getElementById(`item-${i+1}`);
-        target.setAttribute('class', 'medium');
-        target.src = arr[i].path;
+    for (let item of items) {
+        if (item !== previousLeft && item !== previousMiddle && item !== previousRight) {
+            leftItem = item;
+            leftItem.views++;
+            break
+        }
     }
+
+    for (let item of items) {
+        if (item !== previousLeft && item !== previousMiddle && item !== previousRight && item !== leftItem) {
+            middleItem = item;
+            leftItem.views++;
+            break
+        }
+    }
+
+    for (let item of items) {
+        if (item !== previousLeft && item !== previousMiddle && item !== previousRight && item !== leftItem && item !== middleItem) {
+            rightItem = item;
+            rightItem.views++;
+            break
+        }
+    }
+
+    target = document.getElementById('item-1');
+    target.src = leftItem.path;
+
+    target = document.getElementById('item-2');
+    target.src = rightItem.path;
+
+    target = document.getElementById('item-3');
+    target.src = middleItem.path;
 }
 
 Item.items = [];
@@ -59,10 +83,9 @@ function voteHandler(event) {
     event.preventDefault();
 
     let id = event.target.id;
-    console.log(rounds);
 
-    if (rounds < 24) {
-        rounds++;
+    if (currentRound !== rounds) {
+        currentRound++;
 
         if (id === 'item-1') {
             leftItem.likes++;
@@ -73,6 +96,7 @@ function voteHandler(event) {
         }
         render(Item.items);
     } else {
+        console.log(currentRound);
         for (let i of document.getElementsByTagName('img')) {
             i.removeEventListener('click', voteHandler);
         }
@@ -82,9 +106,9 @@ function voteHandler(event) {
 function getResults() {
     const parent = document.getElementById('results');
     let items = Item.items;
-    parent.innerHTML =  '';
+    parent.innerHTML = '';
 
-    if (rounds > 1) {
+    if (currentRound > 1) {
         for (let i in items) {
             createChild('li', parent, `${items[i].name} got ${items[i].likes} likes and was seen ${items[i].views} times.`);
         }
@@ -98,6 +122,44 @@ function createChild(tag, parent, text) {
     let newTextNode = document.createTextNode(text);
     newElem.appendChild(newTextNode);
     parent.appendChild(newElem);
+}
+
+//chartJS
+
+function makeItemChart() {
+    let itemNames = [];
+    let itemLikes = [];
+
+    for (let item of Item.items) {
+        itemNames.push(item.name);
+        itemLikes.push(item.likes);
+    }
+
+    const ctx = document.getElementById('itemChart').getContext('2d');
+    const itemChart = new Chart(ctx, {
+        // type of chart
+        type: 'bar',
+
+        data: {
+            labels: itemNames,
+            datasets: [{
+                label: 'Item Likes',
+                backgroundColor: 'rgb(255,255,255)',
+                borderColor: 'rgb(255,255,255)',
+                data: itemLikes
+            }]
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 }
 
 const wineGlass = new Item('wine-glass', 'imgs/wine-glass.jpg');
@@ -123,7 +185,11 @@ const bag = new Item('bag', 'imgs/bag.jpg');
 
 
 function render(items) {
-    items[0].getRandomItem();
+    items[0].get3NewItems();
+
+    if (currentRound === rounds) {
+        makeItemChart();
+    }
 }
 
 render(Item.items);
