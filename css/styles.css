@@ -1,0 +1,49 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css');
+
+html {
+    background-color: rgb(57, 65, 73);
+    color: rgb(57, 65, 73);
+}
+
+body {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: gainsboro;
+}
+
+main  {
+    margin: 0 auto;
+}
+
+header {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    margin: 0 0 3rem 0;
+}
+
+header img {
+    width: 80px;
+    height: 32px;
+}
+header h1 {
+    font-size: xx-large;
+}
+
+#img-container {
+    display: flex;
+    justify-content:unset;
+    margin: 0 auto;
+    /* border: solid slategray .5rem; */
+    /* padding: 10px 10px 40px 10px; */
+}
+
+img.medium {
+    width: 450px;
+    height: 450px;
+    border: solid slategray .5rem;
+    border-collapse: collapse;
+}
