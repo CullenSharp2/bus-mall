@@ -27,25 +27,48 @@ function Item(name, path) {
     Item.items.push(this);
 }
 
-Item.prototype.getRandomItem = function (catalogItems) {
-    const arr = Item.items;
+Item.prototype.get3NewItems = function (catalogItems) {
+    const items = Item.items;
     let target;
 
-    shuffle(arr);
-    leftItem = arr[0];
-    leftItem.views++;
+    let previousLeft = leftItem;
+    let previousMiddle = middleItem;
+    let previousRight = rightItem;
 
-    middleItem = arr[1];
-    middleItem.views++;
+    shuffle(items);
 
-    rightItem = arr[2];
-    rightItem.views++;
-
-    for (let i = 0; i < 3; i++) {
-        target = document.getElementById(`item-${i+1}`);
-        target.setAttribute('class', 'medium');
-        target.src = arr[i].path;
+    for (let item of items) {
+        if (item !== previousLeft && item !== previousMiddle && item !== previousRight) {
+            leftItem = item;
+            leftItem.views++;
+            break
+        }
     }
+
+    for (let item of items) {
+        if (item !== previousLeft && item !== previousMiddle && item !== previousRight && item !== leftItem) {
+            middleItem = item;
+            leftItem.views++;
+            break
+        }
+    }
+
+    for (let item of items) {
+        if (item !== previousLeft && item !== previousMiddle && item !== previousRight && item !== leftItem && item !== middleItem) {
+            rightItem = item;
+            rightItem.views++;
+            break
+        }
+    }
+
+    target = document.getElementById('item-1');
+    target.src = leftItem.path;
+
+    target = document.getElementById('item-2');
+    target.src = rightItem.path;
+
+    target = document.getElementById('item-3');
+    target.src = middleItem.path;
 }
 
 Item.items = [];
@@ -82,7 +105,7 @@ function voteHandler(event) {
 function getResults() {
     const parent = document.getElementById('results');
     let items = Item.items;
-    parent.innerHTML =  '';
+    parent.innerHTML = '';
 
     if (rounds > 1) {
         for (let i in items) {
@@ -123,7 +146,8 @@ const bag = new Item('bag', 'imgs/bag.jpg');
 
 
 function render(items) {
-    items[0].getRandomItem();
+    console.log(middleItem);
+    items[0].get3NewItems();
 }
 
 render(Item.items);
