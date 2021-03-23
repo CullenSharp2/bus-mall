@@ -1,5 +1,6 @@
 'use strict';
-let rounds = 0;
+let currentRound = 0;
+let rounds = 25;
 
 //store where each item is on
 let leftItem = null;
@@ -82,10 +83,9 @@ function voteHandler(event) {
     event.preventDefault();
 
     let id = event.target.id;
-    console.log(rounds);
 
-    if (rounds < 24) {
-        rounds++;
+    if (currentRound !== rounds) {
+        currentRound++;
 
         if (id === 'item-1') {
             leftItem.likes++;
@@ -96,6 +96,7 @@ function voteHandler(event) {
         }
         render(Item.items);
     } else {
+        console.log(currentRound);
         for (let i of document.getElementsByTagName('img')) {
             i.removeEventListener('click', voteHandler);
         }
@@ -107,7 +108,7 @@ function getResults() {
     let items = Item.items;
     parent.innerHTML = '';
 
-    if (rounds > 1) {
+    if (currentRound > 1) {
         for (let i in items) {
             createChild('li', parent, `${items[i].name} got ${items[i].likes} likes and was seen ${items[i].views} times.`);
         }
@@ -121,6 +122,44 @@ function createChild(tag, parent, text) {
     let newTextNode = document.createTextNode(text);
     newElem.appendChild(newTextNode);
     parent.appendChild(newElem);
+}
+
+//chartJS
+
+function makeItemChart() {
+    let itemNames = [];
+    let itemLikes = [];
+
+    for (let item of Item.items) {
+        itemNames.push(item.name);
+        itemLikes.push(item.likes);
+    }
+
+    const ctx = document.getElementById('itemChart').getContext('2d');
+    const itemChart = new Chart(ctx, {
+        // type of chart
+        type: 'bar',
+
+        data: {
+            labels: itemNames,
+            datasets: [{
+                label: 'Item Likes',
+                backgroundColor: 'rgb(255,255,255)',
+                borderColor: 'rgb(255,255,255)',
+                data: itemLikes
+            }]
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 }
 
 const wineGlass = new Item('wine-glass', 'imgs/wine-glass.jpg');
@@ -146,8 +185,11 @@ const bag = new Item('bag', 'imgs/bag.jpg');
 
 
 function render(items) {
-    console.log(middleItem);
     items[0].get3NewItems();
+
+    if (currentRound === rounds) {
+        makeItemChart();
+    }
 }
 
 render(Item.items);
