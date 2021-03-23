@@ -1,41 +1,36 @@
 'use strict';
-let rounds = 25;
+let rounds = 0;
 
-//bad var for test only
-let count = 0;
+//store where each item is on
+let leftItem = null;
+let middleItem = null;
+let rightItem = null;
 
-function CatalogItem (name, path, views) {
+function Item (name, path) {
     this.name = name;
     this.path = path;
-    this.views = views;
-    this.likes = likes;
+    this.views = 0;
+    this.likes = 0;
 
-    CatalogItem.catalogItems.push(this);
+    Item.items.push(this);
 }
 
-CatalogItem.prototype.getRandomItem = function(catalogItems) {
+Item.prototype.getRandomItem = function(catalogItems) {
     let target;
     let randInt;
 
     for(let i = 1; i <= 3; i += 1) {
-        randInt = Math.floor(Math.random() * (CatalogItem.catalogItems.length - 0) + 0); 
+        randInt = Math.floor(Math.random() * (Item.items.length - 0) + 0); 
+        leftItem = Item.items[];
         target = document.getElementById(`item-${i}`);
-        target.src = CatalogItem.catalogItems[randInt].path;
-        // createImg('img', target, CatalogItem.catalogItems[randInt].path, 'medium');
+        target.src = Item.items[randInt].path;
 
-        CatalogItem.catalogItems[randInt].views++;
-        // console.log(`${CatalogItem.catalogItems[randInt].name} has been viewed ${CatalogItem.catalogItems[randInt].views} times`);
+        Item.items[randInt].views++;
     }
 }
 
-CatalogItem.catalogItems = [];
+Item.items = [];
 
-function createImg (tag, parent, value, size) {
-    const newElem = document.createElement(tag);
-    newElem.setAttribute('src', value);
-    newElem.setAttribute('class', size);
-    parent.appendChild(newElem);
-}
 
 for(let i of document.getElementsByTagName('img')) {
     i.addEventListener('click', voteHandler);
@@ -45,35 +40,44 @@ function voteHandler(event) {
     event.preventDefault();
     let id = event.target.id;
 
-    if()
+    if (rounds < 25) {
+        rounds++;
 
-    render(CatalogItem.catalogItems);
+        if (id === 'item-1') {
+            // leftItem.likes++;
+        } else if (id === 'item-2') {
+            // middleItem.likes++;
+        } else if (id === 'item-3') {
+            // rightItem.likes++;
+        }
+    render(Item.items);
+    }
 }
 
-const wineGlass = new CatalogItem('wine-glass', 'imgs/wine-glass.jpg', 0, 0);
-const waterCan = new CatalogItem('water-can', 'imgs/water-can.jpg', 0, 0);
-const usb = new CatalogItem('usb', 'imgs/usb.gif', 0, 0);
-const unicorn = new CatalogItem('unicorn', 'imgs/unicorn.jpg', 0, 0);
-const tauntaun = new CatalogItem('tauntaun', 'imgs/tauntaun.jpg', 0, 0);
-const sweep = new CatalogItem('sweep', 'imgs/sweep.png', 0, 0);
-const shark = new CatalogItem('shark', 'imgs/shark.jpg', 0, 0);
-const scissors = new CatalogItem('scissors', 'imgs/scissors.jpg', 0, 0);
-const petSweep = new CatalogItem ('pet-sweep', 'imgs/pet-sweep.jpg', 0, 0);
-const pen = new CatalogItem('pen', 'imgs/pen.jpg', 0, 0);
-const dragon = new CatalogItem('dragon', 'imgs/dragon.jpg', 0, 0);
-const dogDuck = new CatalogItem('dog-duck', 'imgs/dog-duck.jpg', 0, 0);
-const cthulhu = new CatalogItem('cthulhu', 'imgs/cthulhu.jpg', 0, 0);
-const chair = new CatalogItem('chair', 'imgs/chair.jpg', 0, 0);
-const bubblegum = new CatalogItem('bubblegum', 'imgs/bubblegum.jpg', 0, 0);
-const breakfast = new CatalogItem('breakfast', 'imgs/breakfast.jpg', 0, 0);
-const boots = new CatalogItem('boots', 'imgs/boots.jpg', 0, 0);
-const bathroom = new CatalogItem('bathroom', 'imgs/bathroom.jpg', 0, 0);
-const banana = new CatalogItem('banana', 'imgs/banana.jpg', 0, 0);
-const bag = new CatalogItem ('bag', 'imgs/bag.jpg', 0, 0);
+const wineGlass = new Item('wine-glass', 'imgs/wine-glass.jpg');
+const waterCan = new Item('water-can', 'imgs/water-can.jpg');
+const usb = new Item('usb', 'imgs/usb.gif');
+const unicorn = new Item('unicorn', 'imgs/unicorn.jpg');
+const tauntaun = new Item('tauntaun', 'imgs/tauntaun.jpg');
+const sweep = new Item('sweep', 'imgs/sweep.png');
+const shark = new Item('shark', 'imgs/shark.jpg');
+const scissors = new Item('scissors', 'imgs/scissors.jpg');
+const petSweep = new Item ('pet-sweep', 'imgs/pet-sweep.jpg');
+const pen = new Item('pen', 'imgs/pen.jpg');
+const dragon = new Item('dragon', 'imgs/dragon.jpg';
+const dogDuck = new Item('dog-duck', 'imgs/dog-duck.jpg');
+const cthulhu = new Item('cthulhu', 'imgs/cthulhu.jpg');
+const chair = new Item('chair', 'imgs/chair.jpg');
+const bubblegum = new Item('bubblegum', 'imgs/bubblegum.jpg');
+const breakfast = new Item('breakfast', 'imgs/breakfast.jpg');
+const boots = new Item('boots', 'imgs/boots.jpg');
+const bathroom = new Item('bathroom', 'imgs/bathroom.jpg';
+const banana = new Item('banana', 'imgs/banana.jpg';
+const bag = new Item ('bag', 'imgs/bag.jpg');
 
 
 function render(catalogItem) {
     catalogItem[0].getRandomItem();
 }
 
-render(CatalogItem.catalogItems);
+render(Item.items);
