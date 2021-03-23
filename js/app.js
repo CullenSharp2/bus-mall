@@ -32,7 +32,7 @@ Item.prototype.getRandomItem = function (catalogItems) {
     for (let i = 0; i < 3; i++) {
         target = document.getElementById(`item-${i+1}`);
         target.setAttribute('class', 'medium');
-        target.src = arr[i].path; 
+        target.src = arr[i].path;
     }
 }
 
@@ -45,9 +45,11 @@ for (let i of document.getElementsByTagName('img')) {
 
 function voteHandler(event) {
     event.preventDefault();
+    
     let id = event.target.id;
+    console.log(rounds);
 
-    if (rounds < 25) {
+    if (rounds < 24) {
         rounds++;
 
         if (id === 'item-1') {
@@ -58,6 +60,10 @@ function voteHandler(event) {
             rightItem.likes++;
         }
         render(Item.items);
+    } else {
+        for (let i of document.getElementsByTagName('img')) {
+            i.removeEventListener('click', voteHandler);
+        }
     }
 }
 
@@ -68,6 +74,13 @@ function shuffle(array) {
         array[i] = array[j];
         array[j] = temp;
     }
+}
+
+function createChild (tag, parent, text) {
+    const newElem = document.createElement(tag);
+    let newTextNode = document.createTextNode(text);
+    newElem.appendChild(newTextNode);
+    parent.appendChild(newElem);
 }
 
 const wineGlass = new Item('wine-glass', 'imgs/wine-glass.jpg');
@@ -92,8 +105,15 @@ const banana = new Item('banana', 'imgs/banana.jpg');
 const bag = new Item('bag', 'imgs/bag.jpg');
 
 
-function render(catalogItem) {
-    catalogItem[0].getRandomItem();
+function render(items) {
+    const parent = document.getElementById('results');
+    items[0].getRandomItem();
+
+    if (rounds === 24) {
+        for (let i in items) {
+            createChild('li', parent, `${items[i].name} got ${items[i].likes} likes.`);
+        }
+    }
 }
 
 render(Item.items);
