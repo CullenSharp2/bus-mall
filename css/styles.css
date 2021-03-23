@@ -1,0 +1,18 @@
+body {
+    width: 960px;
+}
+
+main  {
+    margin: 0 auto;
+}
+
+#img-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+img.medium {
+    width: 150px;
+    height: 150px;
+}
