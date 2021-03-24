@@ -83,7 +83,7 @@ Item.prototype.get3NewItems = function (catalogItems) {
 Item.items = [];
 
 //broken image at the top of page
-for (let element of document.getElementsByTagName('img')) {
+for (let element of document.querySelectorAll('img.image')) {
     element.addEventListener('click', voteHandler);
 }
 
