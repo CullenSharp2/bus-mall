@@ -104,7 +104,7 @@ function voteHandler(event) {
         }
         render(Item.items);
     } else {
-        console.log(currentRound);
+        setStoredItems();
         for (let i of document.getElementsByTagName('img')) {
             i.removeEventListener('click', voteHandler);
         }
@@ -200,4 +200,23 @@ function render(items) {
     }
 }
 
+function setStoredItems() {
+    let stringifiedItems = JSON.stringify(Item.items);
+    localStorage.setItem('item', stringifiedItems);
+}
+
+function getStoredItems() {
+    let storedItems = localStorage.getItem('item');
+
+    if (storedItems !== null) {
+        let parsedItems = JSON.parse(storedItems);
+        console.log(parsedItems.length)
+        for (let i in parsedItems) {
+            Item.items[i].views += parsedItems[i].views;
+            Item.items[i].likes += parsedItems[i].likes;
+            // new Item(item.name, item.path);
+        }
+    }
+}
+getStoredItems();
 render(Item.items);
