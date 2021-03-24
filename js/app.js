@@ -1,16 +1,19 @@
 'use strict';
-let currentRound = 0;
-let rounds = 25;
 
-//store where each item is on
+const maxRounds = 25;
+let currentRound = 0;
+
+//reference to the object on the page
 let leftItem = null;
 let middleItem = null;
 let rightItem = null;
 
-//get reference to button
+//reference button
 const resultsButton = document.getElementById('get-results');
 
 function shuffle(array) {
+    //randomizes the index of each item in a given array
+    
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i);
         const temp = array[i];
@@ -25,11 +28,15 @@ function Item(name, path) {
     this.views = 0;
     this.likes = 0;
 
+    //add new Item to a list of Item(s)
+    //items is a property of this object
     Item.items.push(this);
 }
 
 Item.prototype.get3NewItems = function (catalogItems) {
-    const items = Item.items;
+    //adds a new method to Item: get3NewItems()
+
+    const items = Item.items; //reference items array for brevity
     let target;
 
     let previousLeft = leftItem;
@@ -38,10 +45,11 @@ Item.prototype.get3NewItems = function (catalogItems) {
 
     shuffle(items);
 
+    //check for duplicates
     for (let item of items) {
         if (item !== previousLeft && item !== previousMiddle && item !== previousRight) {
             leftItem = item;
-            leftItem.views++;
+            leftItem.views += 1;
             break
         }
     }
@@ -49,7 +57,7 @@ Item.prototype.get3NewItems = function (catalogItems) {
     for (let item of items) {
         if (item !== previousLeft && item !== previousMiddle && item !== previousRight && item !== leftItem) {
             middleItem = item;
-            leftItem.views++;
+            leftItem.views += 1;
             break
         }
     }
@@ -57,7 +65,7 @@ Item.prototype.get3NewItems = function (catalogItems) {
     for (let item of items) {
         if (item !== previousLeft && item !== previousMiddle && item !== previousRight && item !== leftItem && item !== middleItem) {
             rightItem = item;
-            rightItem.views++;
+            rightItem.views += 1;
             break
         }
     }
@@ -74,9 +82,9 @@ Item.prototype.get3NewItems = function (catalogItems) {
 
 Item.items = [];
 
-
-for (let i of document.getElementsByTagName('img')) {
-    i.addEventListener('click', voteHandler);
+//broken image at the top of page
+for (let element of document.getElementsByTagName('img')) {
+    element.addEventListener('click', voteHandler);
 }
 
 function voteHandler(event) {
@@ -84,7 +92,7 @@ function voteHandler(event) {
 
     let id = event.target.id;
 
-    if (currentRound !== rounds) {
+    if (currentRound !== maxRounds) {
         currentRound++;
 
         if (id === 'item-1') {
@@ -187,7 +195,7 @@ const bag = new Item('bag', 'imgs/bag.jpg');
 function render(items) {
     items[0].get3NewItems();
 
-    if (currentRound === rounds) {
+    if (currentRound === maxRounds) {
         makeItemChart();
     }
 }
