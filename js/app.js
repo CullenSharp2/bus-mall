@@ -13,7 +13,7 @@ const resultsButton = document.getElementById('get-results');
 
 function shuffle(array) {
     //randomizes the index of each item in a given array
-    
+
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i);
         const temp = array[i];
@@ -170,28 +170,6 @@ function makeItemChart() {
     });
 }
 
-const wineGlass = new Item('wine-glass', 'imgs/wine-glass.jpg');
-const waterCan = new Item('water-can', 'imgs/water-can.jpg');
-const usb = new Item('usb', 'imgs/usb.gif');
-const unicorn = new Item('unicorn', 'imgs/unicorn.jpg');
-const tauntaun = new Item('tauntaun', 'imgs/tauntaun.jpg');
-const sweep = new Item('sweep', 'imgs/sweep.png');
-const shark = new Item('shark', 'imgs/shark.jpg');
-const scissors = new Item('scissors', 'imgs/scissors.jpg');
-const petSweep = new Item('pet-sweep', 'imgs/pet-sweep.jpg');
-const pen = new Item('pen', 'imgs/pen.jpg');
-const dragon = new Item('dragon', 'imgs/dragon.jpg');
-const dogDuck = new Item('dog-duck', 'imgs/dog-duck.jpg');
-const cthulhu = new Item('cthulhu', 'imgs/cthulhu.jpg');
-const chair = new Item('chair', 'imgs/chair.jpg');
-const bubblegum = new Item('bubblegum', 'imgs/bubblegum.jpg');
-const breakfast = new Item('breakfast', 'imgs/breakfast.jpg');
-const boots = new Item('boots', 'imgs/boots.jpg');
-const bathroom = new Item('bathroom', 'imgs/bathroom.jpg');
-const banana = new Item('banana', 'imgs/banana.jpg');
-const bag = new Item('bag', 'imgs/bag.jpg');
-
-
 function render(items) {
     items[0].get3NewItems();
 
@@ -210,13 +188,35 @@ function getStoredItems() {
 
     if (storedItems !== null) {
         let parsedItems = JSON.parse(storedItems);
-        console.log(parsedItems.length)
-        for (let i in parsedItems) {
-            Item.items[i].views += parsedItems[i].views;
-            Item.items[i].likes += parsedItems[i].likes;
-            // new Item(item.name, item.path);
+
+        for (let productData of parsedItems) {
+            let retrievedItem = new Item(productData.name, productData.path);
+            retrievedItem.views = productData.views;
+            retrievedItem.likes = productData.likes;
         }
+    } else {
+        const wineGlass = new Item('wine-glass', 'imgs/wine-glass.jpg');
+        const waterCan = new Item('water-can', 'imgs/water-can.jpg');
+        const usb = new Item('usb', 'imgs/usb.gif');
+        const unicorn = new Item('unicorn', 'imgs/unicorn.jpg');
+        const tauntaun = new Item('tauntaun', 'imgs/tauntaun.jpg');
+        const sweep = new Item('sweep', 'imgs/sweep.png');
+        const shark = new Item('shark', 'imgs/shark.jpg');
+        const scissors = new Item('scissors', 'imgs/scissors.jpg');
+        const petSweep = new Item('pet-sweep', 'imgs/pet-sweep.jpg');
+        const pen = new Item('pen', 'imgs/pen.jpg');
+        const dragon = new Item('dragon', 'imgs/dragon.jpg');
+        const dogDuck = new Item('dog-duck', 'imgs/dog-duck.jpg');
+        const cthulhu = new Item('cthulhu', 'imgs/cthulhu.jpg');
+        const chair = new Item('chair', 'imgs/chair.jpg');
+        const bubblegum = new Item('bubblegum', 'imgs/bubblegum.jpg');
+        const breakfast = new Item('breakfast', 'imgs/breakfast.jpg');
+        const boots = new Item('boots', 'imgs/boots.jpg');
+        const bathroom = new Item('bathroom', 'imgs/bathroom.jpg');
+        const banana = new Item('banana', 'imgs/banana.jpg');
+        const bag = new Item('bag', 'imgs/bag.jpg');
     }
 }
+
 getStoredItems();
 render(Item.items);
